@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link href="asserts/layui/css/layui.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="layui-row" style="padding: 100px;">
+    <div class="layui-col-md4">
+        <div style="width: 10px; height: 10px;"></div>
+    </div>
+    <div class="layui-col-md4 layui-anim layui-anim-fadein">
+        <form class="layui-form" action="login.do" method="post">
+            <h2 align="center" style="margin-bottom: 20px;">管理员登录</h2>
+            <p align="center" style="margin-bottom: 5px;"><#if tips??>${tips}</#if></p>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> ID</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required  lay-verify="required" placeholder="输入管理员ID" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i>密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required  lay-verify="required" placeholder="输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-col-md4">
+
+    </div>
+</div>
+
+<script src="asserts/layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        /*  form.on('submit(formDemo)', function(data){
+           layer.msg(JSON.stringify(data.field));
+           return false;
+         }); */
+    });
+</script>
+
+</body>
+</html>

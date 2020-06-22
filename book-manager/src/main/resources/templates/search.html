@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查找结果&nbsp;|&nbsp;华软图书管理系统</title>
+    <link href="asserts/layui/css/layui.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        function myConfirm () {
+
+            return confirm("确定要删除本书？");
+        }
+        <#if tips??>
+        alert("${tips}");
+        </#if>
+    </script>
+</head>
+<body>
+
+<header class="layui-bg-black"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <div style=" width: 300px; font-size: 22px; display: flex;">
+        <img style="width: 40px; height: 40px;"
+             src="asserts/layui/sise.jpg"/>
+        <span>&nbsp;&nbsp;</span>
+        <li>华软图书管理系统</li>
+    </div>
+    <div>
+        <span style="font-weight: bold; ">查找结果</span>
+    </div>
+    <ul class="layui-nav">
+        <span class="layui-badge-dot layui-bg-blue"></span>
+        <li class="layui-nav-item"><a href="/books.do">返回</a></li>
+        <li class="layui-nav-item"><a href=""><img
+                src="//t.cn/RCzsdCq" class="layui-nav-img"><#if Session["ADMIN"]??>${Session["ADMIN"].username}</#if></a>
+            <dl class="layui-nav-child">
+                <dd>
+                    <a href="javascript:;">修改信息</a>
+                </dd>
+                <dd>
+                    <a href="javascript:;">安全管理</a>
+                </dd>
+                <dd>
+                    <a href="adminLogout.do">退出</a>
+                </dd>
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<section>
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md1" >
+<!--            1/3-->
+        </div>
+
+        <div class="layui-col-md10 layui-anim layui-anim-upbit">
+            <#if books??>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>作者</th>
+                    <th>ISBN</th>
+                    <th>出版社</th>
+                    <th>图片</th>
+                    <th>库存</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <#list books as book>
+                <tr>
+                    <td>${book_index+1}</td>
+                    <td><#if (book.name)??>${book.name}</#if></td>
+                    <td> <#if (book.author)??>${book.author}</#if></td>
+                    <td> <#if (book.isbn)??>${book.isbn}</#if></td>
+                    <td> <#if (book.press)??>${book.press}</#if></td>
+                    <td> <img style="width: 50px; height: 50px;" src="<#if (book.pictureName)??>${book.pictureName}</#if>"/> </td>
+                    <td> <#if (book.quantity)??>${book.quantity}</#if></td>
+                    <td>
+                        <div class="layui-btn-container">
+                        <a href="toBorrowers.do?id=${book.id}<#if key??>&key=${key}</#if>"
+                           class="layui-btn layui-btn-sm layui-btn-normal">
+                            <i class="layui-icon layui-icon-link"></i>
+                            详情
+                        </a>
+                        <a href="toEdit.do?id=${book.id}<#if key??>&key=${key}</#if>"
+                           class="layui-btn layui-btn-sm layui-btn-warm">
+                            <i class="layui-icon layui-icon-edit"></i>
+                            编辑
+                        </a>
+                        <!--确定按钮步骤-->
+                            <a href="delete.do?id=${book.id}<#if key??>&key=${key}</#if>" onclick="return myConfirm()"
+                               class="layui-btn layui-btn-sm layui-btn-danger">
+                                <i class="layui-icon layui-icon-delete"></i>
+                                删除
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </#list>
+                </tbody>
+            </table>
+            <#else>
+            <h2 align="center" style="padding: 15px; ">暂无图书信息</h2>
+            </#if>
+
+
+            <div style="display: flex; justify-content: center;">
+                <div id="pager"></div>
+                </div>
+        </div>
+
+        <div class="layui-col-md1" >
+<!--            1/3-->
+        </div>
+    </div>
+</section>
+
+<script src="asserts/layui/layui.js"></script>
+<script>
+    layui.use(['element', 'laypage'], function(){
+        var element = layui.element;
+        var laypage = layui.laypage;
+
+
+        laypage.render({
+            elem: 'pager',
+            count: 8
+        });
+
+
+
+
+    });
+</script>
+</body>
+</html>

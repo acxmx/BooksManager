@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aptitude.mapper.BookMapper">
+    <select id="findById" parameterType="Integer" resultType="Book">
+        select * from t_book where id = #{id}
+    </select>
+
+    <select id="findByKey" parameterType="String" resultType="Book">
+        select * from t_book where
+        name like concat('%', #{key},'%')
+        or
+        author like concat('%', #{key},'%')
+    </select>
+
+    <insert id="add" parameterType="Book">
+        insert into t_book(name, author, isbn, press, quantity, pictureName,
+        information)
+        values (#{name}, #{author}, #{isbn}, #{press}, #{quantity}, #{pictureName},
+        #{information});
+    </insert>
+
+    <select id="findAll" resultType="Book">
+        select * from t_book
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(*) from t_book
+    </select>
+
+    <select id="findByPage" parameterType="Integer" resultType="Book">
+        select * from t_book limit #{index}, 8
+    </select>
+
+    <delete id="delete" parameterType="Integer" >
+        delete from t_book where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Book">
+        update t_book
+        set name = #{name},
+        author = #{author},
+        isbn = #{isbn},
+        press = #{press},
+        quantity = #{quantity},
+        pictureName = #{pictureName},
+        information = #{information}
+        where id = #{id}
+    </update>
+
+    <select id="findBorrowers" parameterType="Integer" resultMap="borrowerListOfBook">
+        SELECT b.*, u.id u_id, u.username, u.number, u.password, u.sex, u.telephone, u.email
+        FROM t_book b, t_item i, t_user u
+        where b.id = i.book_id and u.id = i.user_id and b.id = #{id}
+    </select>
+
+    <resultMap id="borrowerListOfBook" type="Book">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="author" column="author"/>
+        <result property="press" column="press"/>
+        <result property="isbn" column="isbn"/>
+        <result property="quantity" column="quantity"/>
+        <result property="pictureName" column="pictureName"/>
+        <collection property="userList" ofType="User" resultMap="userResult"/>
+    </resultMap>
+
+    <resultMap id="userResult" type="User">
+        <id property="id" column="u_id"/>
+        <result property="username" column="username"/>
+        <result property="number" column="number"/>
+        <result property="password" column="password"/>
+        <result property="sex" column="sex"/>
+        <result property="telephone" column="telephone"/>
+        <result property="email" column="email"/>
+    </resultMap>
+
+</mapper>

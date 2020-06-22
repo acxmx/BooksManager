@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页&nbsp;|&nbsp;华软图书管理系统</title>
+    <link href="asserts/layui/css/layui.css" type="text/css" rel="stylesheet">
+    <script >
+        function search () {
+            var key = document.getElementById("title").value;
+            if (key != ""){
+                window.location.href="search.do?key=" + key;
+            }
+        }
+
+        function myConfirm () {
+
+            return confirm("确定要删除本书？");
+        }
+    </script>
+</head>
+<body>
+<header class="layui-bg-black"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <div style=" width: 300px; font-size: 22px; display: flex;">
+        <img style="width: 40px; height: 40px;"
+             src="asserts/layui/sise.jpg"/>
+        <span>&nbsp;&nbsp;</span><li>华软图书管理系统</li>
+    </div>
+    <ul class="layui-nav">
+        <li class="layui-nav-item"><a href="">控制台<span
+                class="layui-badge">9</span></a></li>
+        <li class="layui-nav-item"><a href="">个人中心<span
+                class="layui-badge-dot"></span></a></li>
+        <li class="layui-nav-item"><a href="#"><img
+                src="//t.cn/RCzsdCq" class="layui-nav-img"><#if Session["ADMIN"]??>${Session["ADMIN"].username}</#if></a>
+            <dl class="layui-nav-child">
+                <dd>
+                    <a href="javascript:;">修改信息</a>
+                </dd>
+                <dd>
+                    <a href="javascript:;">安全管理</a>
+                </dd>
+                <dd>
+                    <a href="logout.do">退出</a>
+                </dd>
+            </dl>
+        </li>
+    </ul>
+</header>
+<section style=" display: flex; ">
+    <nav class="layui-bg-black" style="width: 200px;">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test"
+            lay-shrink="all">
+            <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+            <li class="layui-nav-item layui-nav-itemed"><a
+                    href="javascript:;">图书管理</a>
+                <dl class="layui-nav-child">
+                    <dd class="layui-this">
+                        <a href="javascript:;">全部图书</a>
+                    </dd>
+                    <dd>
+                        <a href="javascript:;">分类检索</a>
+                    </dd>
+                    <dd>
+                        <a href="">借书登记</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javascript:;">读者管理</a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">全部读者</a>
+                    </dd>
+                    <dd>
+                        <a href="">还书登记</a>
+                    </dd>
+                    <dd>
+                        <a href="">逾期列表</a>
+                    </dd>
+                    <dd>
+                        <a href="">查找读者</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">管理员</a></li>
+            <li class="layui-nav-item"><a href="">系统设置</a></li>
+        </ul>
+    </nav>
+    <article style="flex: 1; padding: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+					<span class="layui-breadcrumb">
+						<p style="font-size: 22px;">图书管理</p>
+					</span>
+            </div>
+            <div style="display: flex;background-color:red; ">
+                <div class="">
+                    <input id="title" type="text" placeholder="输入书名或作者名"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div>
+                    <button onclick="search()" type="button" class="layui-btn layui-bg-blue">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="margin: 3px 20px 0 0;">
+                <!--可以改为出发某个js函数，利用Ajax获取数据-->
+                <a href="toAdd.do"
+                   class="layui-btn"> <i class="layui-icon layui-icon-add-circle-fine"></i> 添加图书
+                </a>
+            </div>
+        </div>
+        <hr>
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>作者</th>
+                <th>ISBN</th>
+                <th>出版社</th>
+                <th>图片</th>
+                <th>库存</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="container">
+
+            </tbody>
+        </table>
+
+        <script id="demo" type="text/html">
+            {{#  layui.each(d, function(index, item){ }}
+            <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.author}}</td>
+                <td>{{item.isbn}}</td>
+                <td>{{item.press}}</td>
+                <td><img style="width: 50px; height: 50px;" src="{{item.pictureName}}"/></td>
+                <td>{{item.quantity}}</td>
+                <td>
+                    <div class="layui-btn-container">
+                        <a href="toBorrowers.do?id={{item.id}}"
+                           class="layui-btn layui-btn-sm layui-btn-normal">
+                            <i class="layui-icon layui-icon-link"></i>
+                            详情
+                        </a>
+                        <a href="toEdit.do?id={{item.id}}"
+                           class="layui-btn layui-btn-sm layui-btn-warm">
+                            <i class="layui-icon layui-icon-edit"></i>
+                            编辑
+                        </a>
+                        <!--确定按钮步骤-->
+                        <a href="delete.do?id={{item.id}}" onclick="return myConfirm()"
+                           class="layui-btn layui-btn-sm layui-btn-danger">
+                            <i class="layui-icon layui-icon-delete"></i>
+                            删除
+                        </a>
+                    </div>
+            </tr>
+            {{#  }); }}
+        </script>
+
+        <div style="display: flex; justify-content: center;">
+            <div id="pager"></div>
+        </div>
+    </article>
+</section>
+
+
+<script src="asserts/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['element', 'laypage', 'jquery', 'laytpl'], function () {
+        var element = layui.element;
+        var laypage = layui.laypage;
+        var $ = layui.jquery;
+        var laytpl = layui.laytpl;
+        var needRender = true;
+
+        <#if tips??>
+                alert("${tips}");
+                </#if>
+
+
+
+        function getBooksList(index = 1) {
+
+            $.get("getByPage.do", {
+                pageIndex: index,
+            }, data => {
+                //console.log(data)
+                laytpl($("#demo").html()).render(data, function (html) {
+                    $("#container").html(html)
+                });
+
+
+                if (needRender) {
+                    needRender = false;
+
+                    //console.log(typeof(itemCount))
+                    //执行一个laypage实例
+                    laypage.render({
+                        elem: 'pager',
+                        count: ${count}, //数据总数，从服务端得到
+                        jump(obj, first) {
+                            if (!first) {
+                                getBooksList(obj.curr);
+                            }
+                        }
+                    });
+                }
+
+            })
+
+
+        }
+
+        //调用函数获取书本信息
+        getBooksList();
+
+    });
+</script>
+
+</body>
+</html>

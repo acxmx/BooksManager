@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑&nbsp;|&nbsp;华软图书管理系统</title>
+    <link href="asserts/layui/css/layui.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="layui-row" style="padding: 50px 0;">
+    <div class="layui-col-md3" >
+        <div style="width: 10px; height: 10px;"></div>
+    </div>
+    <div class="layui-col-md3 layui-anim layui-anim-up" style="">
+        <div class="layui-form-item layui-form-text" style="">
+            <p style="font-size: 20px; " >展示图片</p>
+            <div style="width: 300px; height: 300px; background-color: red; ">
+                <img style="width: 300px; height: 300px;" src="<#if (book.pictureName)??>${book.pictureName}</#if>" />
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-anim layui-anim-upbit">
+        <form id="formDemo" class="layui-form layui-form-pane" action="update.do" method="post"
+              enctype="multipart/form-data">
+            <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+            <input type="hidden" name="key" value="<#if key??>${key}</#if>">
+            <input type="hidden" name="id" value="${book.id}" />
+            <input type="hidden" name="pictureName" value="<#if (book.pictureName)??>${book.pictureName}</#if>" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">书名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入"
+                           value="<#if (book.name)??>${book.name}</#if>" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="author" placeholder="请输入"
+                           value="<#if (book.author)??>${book.author}</#if>" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">ISBN</label>
+                <div class="layui-input-block">
+                    <input type="text" name="isbn" placeholder="请输入"
+                           value="<#if (book.isbn)??>${book.isbn}</#if>" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版社</label>
+                <div class="layui-input-block">
+                    <input type="text" name="press" placeholder="请输入"
+                           value="<#if (book.press)??>${book.press}</#if>" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">库存</label>
+                <div class="layui-input-block">
+                    <input type="text" name="quantity" placeholder="请输入"
+                           value="<#if (book.quantity)??>${book.quantity}</#if>" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">书本简介</label>
+                <div class="layui-input-block">
+                    <textarea name="information" placeholder="请输入介绍信息" class="layui-textarea"><#if (book.information)??>${book.information}</#if></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">修改图片</label>
+                <div class="layui-input-block">
+                    <input name="file" type="file" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="*">提交修改</button>
+                    <a href="books.do" class="layui-btn layui-btn-normal">返回</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-col-md3" style="">
+
+</div>
+</div>
+
+
+
+
+<script src="asserts/layui/layui.js"></script>
+<script>
+    layui.use(['form'], function() {
+        var form = layui.form;
+
+    });
+
+    <#if errorMessage??>
+    alert("${errorMessage}");
+    </#if>
+
+</script>
+
+</body>
+</html>
